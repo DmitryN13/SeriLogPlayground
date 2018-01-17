@@ -1,11 +1,14 @@
 ﻿using Serilog;
+using Serilog.Debugging;
 using Serilog.Events;
+using Serilog.Filters;
 using Serilog.Sinks.Elasticsearch;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +23,7 @@ namespace SerilLogTest
 {
     class Program
     {
+        private static readonly string[] NAMES = {"Ben", "Dan", "Ike", "Mona", "Suzi" };
         private static ConcurrentDictionary<string, LogEventLevel> _enableLog = new ConcurrentDictionary<string, LogEventLevel>
         {
             ["SerilLogTest.MyClass"] = LogEventLevel.Verbose
@@ -45,18 +49,19 @@ namespace SerilLogTest
                  //.WriteTo.ColoredConsole(outputTemplate: LOG_FORMAT)
                  //.WriteTo.Console(outputTemplate: LOG_FORMAT)
                  .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Minute, outputTemplate: LOG_FORMAT)
-                 .Filter.ByIncludingOnly(l =>
-                 {
-                     LogEventPropertyValue val;
-                     if (!l.Properties.TryGetValue("SourceContext", out val))
-                         return false;
-                     var target = val.ToString();
-                     target = target.Substring(1, target.Length - 2);
-                     LogEventLevel level;
-                     if (!_enableLog.TryGetValue(target, out level))
-                         return false;
-                     return l.Level >= level;
-                 })
+                 //.Filter.ByIncludingOnly(l =>
+                 //{
+                 //    LogEventPropertyValue val;
+                 //    if (!l.Properties.TryGetValue("SourceContext", out val))
+                 //        return false;
+                 //    var target = val.ToString();
+                 //    target = target.Substring(1, target.Length - 2);
+                 //    LogEventLevel level;
+                 //    if (!_enableLog.TryGetValue(target, out level))
+                 //        return false;
+                 //    return l.Level >= level;
+                 //})
+                 .Filter.ByIncludingOnly(Matching.FromSource<MyClass>())
                  .CreateLogger();
 
             var my = new MyClass();
@@ -66,22 +71,36 @@ namespace SerilLogTest
         // https://github.com/serilog/serilog-sinks-elasticsearch
         private static void ELK()
         {
+            // diagnostic info
+            //SelfLog.Enable(Console.Out);
+            //SelfLog.Disable();
+
             Log.Logger = new LoggerConfiguration()
-                 .WriteTo.Console()
-                 .WriteTo.Elasticsearch(
-                    //new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
-                    new ElasticsearchSinkOptions(new Uri("http://localhost:32769")) // docker pull sebp/elk
-                    {
-                        IndexFormat = "demo-{0:yyyy-MM-dd}",
-                        InlineFields = true,
-                        //AutoRegisterTemplate = true,
-                    })
+                    .MinimumLevel.Debug()
+                    .Enrich.With<Enrichment>()
+                    .WriteTo.Seq("http://localhost:5341") 
+                    .WriteTo.Console(restrictedToMinimumLevel:LogEventLevel.Verbose) // Ignore because base is debug
+                    .WriteTo.Elasticsearch(
+                        //new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                        new ElasticsearchSinkOptions(new Uri("http://localhost:32769")) // docker pull sebp/elk
+                        {
+                            MinimumLogEventLevel = LogEventLevel.Information,
+                            IndexFormat = "xdemo-{0:yyyy-MM-dd}",
+                            InlineFields = true,
+                            //AutoRegisterTemplate = true,
+                        })
                   .CreateLogger(); 
             ILogger logger = Log.Logger.ForContext<Program>();
             logger.Information("Hello, User {@User}", Environment.UserName);
             for (int i = 0; i < 200; i++)
             {
-                logger.Information("Iteration {@Index} {@Data}", i, Tuple.Create( i % 10, i % 20, "X" + i % 15));
+                logger.Verbose("Chati: {@Item:0:00} {@Info} {@Name:l}", i * Math.PI, 42 * i, NAMES[i % NAMES.Length]);
+                logger.Debug("{@Item:0:00} {@Info} {@Name:l}", i * Math.PI, 42 * i, NAMES[i % NAMES.Length]);
+                logger.Information("Iteration {@Value:0:00} {@Data} {@Name:l}", i * Math.PI, Tuple.Create(i % 10, i % 20, "X" + i % 15), NAMES[i % NAMES.Length]);
+                if (i % 10 == 0)
+                    logger.Warning("Wrong {@Identity}",Environment.UserInteractive);
+                if (i % 15 == 0)
+                    logger.Error("This is bad {@Ticks}, {@V}", Environment.TickCount, Environment.Version);
                 Thread.Sleep(1000);
             }
         }

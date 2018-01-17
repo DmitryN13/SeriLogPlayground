@@ -1,9 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerilLogTest", "SerilLogTest\SerilLogTest.csproj", "{D0546355-3F25-4443-BDB0-B2F28D036E7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C3098372-4346-46F4-8A02-27A36AE0C6A3}"
+	ProjectSection(SolutionItems) = preProject
+		Links.txt = Links.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLogger", "CommonLogger\CommonLogger.csproj", "{AA036F92-2DD7-4881-9CDC-B1E21BE0DEBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeqProvider", "SeqProvider\SeqProvider.csproj", "{CC897E37-5699-4C5B-90D5-C47F62AEC840}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLoggerContract", "CommonLoggerContract\CommonLoggerContract.csproj", "{E40D3055-09B3-4DE4-9A3F-C6C0B6E03C19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UseCommonLogger", "UseCommonLogger\UseCommonLogger.csproj", "{790ECAD7-819B-4D9F-A10D-23636CDD7328}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Logger", "Common Logger", "{8CAB63BA-AA64-4947-BA03-0413E37A40C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +30,31 @@ Global
 		{D0546355-3F25-4443-BDB0-B2F28D036E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0546355-3F25-4443-BDB0-B2F28D036E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0546355-3F25-4443-BDB0-B2F28D036E7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA036F92-2DD7-4881-9CDC-B1E21BE0DEBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA036F92-2DD7-4881-9CDC-B1E21BE0DEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA036F92-2DD7-4881-9CDC-B1E21BE0DEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA036F92-2DD7-4881-9CDC-B1E21BE0DEBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC897E37-5699-4C5B-90D5-C47F62AEC840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC897E37-5699-4C5B-90D5-C47F62AEC840}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC897E37-5699-4C5B-90D5-C47F62AEC840}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC897E37-5699-4C5B-90D5-C47F62AEC840}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E40D3055-09B3-4DE4-9A3F-C6C0B6E03C19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E40D3055-09B3-4DE4-9A3F-C6C0B6E03C19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E40D3055-09B3-4DE4-9A3F-C6C0B6E03C19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E40D3055-09B3-4DE4-9A3F-C6C0B6E03C19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{790ECAD7-819B-4D9F-A10D-23636CDD7328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{790ECAD7-819B-4D9F-A10D-23636CDD7328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{790ECAD7-819B-4D9F-A10D-23636CDD7328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{790ECAD7-819B-4D9F-A10D-23636CDD7328}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AA036F92-2DD7-4881-9CDC-B1E21BE0DEBB} = {8CAB63BA-AA64-4947-BA03-0413E37A40C2}
+		{CC897E37-5699-4C5B-90D5-C47F62AEC840} = {8CAB63BA-AA64-4947-BA03-0413E37A40C2}
+		{E40D3055-09B3-4DE4-9A3F-C6C0B6E03C19} = {8CAB63BA-AA64-4947-BA03-0413E37A40C2}
+		{790ECAD7-819B-4D9F-A10D-23636CDD7328} = {8CAB63BA-AA64-4947-BA03-0413E37A40C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1BE3565A-E71D-4B95-81AD-430CDC1071B6}

@@ -12,7 +12,8 @@ namespace SerilLogTest
         private readonly ILogger _logger;
         public MyClass()
         {
-            _logger = Log.Logger.ForContext<MyClass>();
+            _logger = Log.Logger.ForContext<MyClass>()
+                                .ForContext("CorrelationID", 123);
         }
 
         public void Hello(int i, string s)
